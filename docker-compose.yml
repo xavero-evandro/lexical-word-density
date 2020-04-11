@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - backend
+
+  api:
+    image: express-app
+    build: .
+    depends_on:
+      - mongo
+    networks:
+      - backend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/usr/src/app
+
+  web:
+    image: express-app
+    networks:
+      - backend
+    command: sh
+
+networks:
+  backend:
